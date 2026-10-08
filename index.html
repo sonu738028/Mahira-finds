@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mahira Finds 🛍️</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff5fa;
+      color: #222;
+    }
+
+    header {
+      background: linear-gradient(135deg, #ff0080, #ff4da6);
+      color: white;
+      text-align: center;
+      padding: 28px 15px;
+      border-radius: 0 0 25px 25px;
+    }
+
+    header h1 {
+      font-size: 32px;
+      margin-bottom: 7px;
+    }
+
+    header p {
+      font-size: 14px;
+      opacity: .95;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: auto;
+      padding: 25px 15px;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .hero h2 {
+      font-size: 25px;
+      color: #e60073;
+      margin-bottom: 8px;
+    }
+
+    .hero p {
+      color: #666;
+    }
+
+    #products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product {
+      background: white;
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 5px 20px rgba(0,0,0,.08);
+      border: 1px solid #f3d9e8;
+      transition: .25s;
+    }
+
+    .product:hover {
+      transform: translateY(-4px);
+    }
+
+    .product img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+      background: #f5f5f5;
+    }
+
+    .product-info {
+      padding: 15px;
+    }
+
+    .product h3 {
+      font-size: 18px;
+      margin-bottom: 8px;
+    }
+
+    .price {
+      color: #e60073;
+      font-weight: bold;
+      font-size: 21px;
+      margin-bottom: 8px;
+    }
+
+    .description {
+      color: #666;
+      font-size: 14px;
+      line-height: 1.5;
+      min-height: 42px;
+      margin-bottom: 14px;
+    }
+
+    .buy-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      text-align: center;
+      text-decoration: none;
+      background: #ff0080;
+      color: white;
+      border-radius: 10px;
+      font-weight: bold;
+    }
+
+    .buy-btn:hover {
+      background: #d9006c;
+    }
+
+    .loading,
+    .empty {
+      text-align: center;
+      padding: 40px 10px;
+      color: #777;
+      grid-column: 1 / -1;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 15px;
+      color: #777;
+      font-size: 12px;
+    }
+
+    .disclosure {
+      margin-top: 8px;
+      color: #999;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>Mahira Finds 🛍️</h1>
+    <p>Trending Fashion & Meesho Finds</p>
+  </header>
+
+  <main class="container">
+
+    <div class="hero">
+      <h2>✨ Latest Finds</h2>
+      <p>Shop our handpicked products from Meesho</p>
+    </div>
+
+    <section id="products">
+      <div class="loading">Loading products...</div>
+    </section>
+
+  </main>
+
+  <footer>
+    © 2026 Mahira Finds
+    <div class="disclosure">
+      This website contains affiliate links. We may earn a commission from eligible purchases.
+    </div>
+  </footer>
+
+  <script type="module">
+
+    import { initializeApp }
+      from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+      query,
+      orderBy
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCJ3DmIQQYmVHa36Aj-2a3dbkwfEovCgQU",
+      authDomain: "mahira-62ff2.firebaseapp.com",
+      projectId: "mahira-62ff2",
+      storageBucket: "mahira-62ff2.firebasestorage.app",
+      messagingSenderId: "294021497209",
+      appId: "1:294021497209:web:c304be79b439de46596fa8"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const productsContainer = document.getElementById("products");
+
+    async function loadProducts() {
+
+      try {
+
+        const productsQuery = query(
+          collection(db, "products"),
+          orderBy("createdAt", "desc")
+        );
+
+        const snapshot = await getDocs(productsQuery);
+
+        productsContainer.innerHTML = "";
+
+        if (snapshot.empty) {
+          productsContainer.innerHTML = `
+            <div class="empty">
+              No products available yet.
+            </div>
+          `;
+          return;
+        }
+
+        snapshot.forEach((doc) => {
+
+          const product = doc.data();
+
+          const card = document.createElement("article");
+          card.className = "product";
+
+          card.innerHTML = `
+            <img
+              src="${product.imageUrl || ""}"
+              alt="${product.name || "Product"}"
+              loading="lazy"
+            >
+
+            <div class="product-info">
+
+              <h3>${product.name || "Product"}</h3>
+
+              <div class="price">
+                ₹${product.price || ""}
+              </div>
+
+              <div class="description">
+                ${product.description || ""}
+              </div>
+
+              <a
+                class="buy-btn"
+                href="${product.meeshoUrl || "#"}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                🛒 View Product on Meesho
+              </a>
+
+            </div>
+          `;
+
+          productsContainer.appendChild(card);
+
+        });
+
+      } catch (error) {
+
+        console.error(error);
+
+        productsContainer.innerHTML = `
+          <div class="empty">
+            Unable to load products right now.
+          </div>
+        `;
+
+      }
+
+    }
+
+    loadProducts();
+
+  </script>
+
+</body>
+</html>
