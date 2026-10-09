@@ -1,9 +1,14 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mahira Finds 🛍️</title>
+
+  <meta name="theme-color" content="#ff0080">
+  <meta name="description" content="Discover trending fashion and handpicked Meesho finds at Mahira Finds.">
+
+  <title>Mahira Finds 🛍️ | Trending Fashion</title>
 
   <style>
     * {
@@ -12,34 +17,49 @@
       padding: 0;
     }
 
+    :root {
+      --pink: #ff0080;
+      --pink-dark: #d9006c;
+      --pink-light: #fff0f7;
+      --text: #25212a;
+      --muted: #716975;
+      --border: #f2dce8;
+      --white: #ffffff;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      background: #fff5fa;
-      color: #222;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #fff8fb;
+      color: var(--text);
+      line-height: 1.5;
     }
 
     header {
       background: linear-gradient(135deg, #ff0080, #ff4da6);
       color: white;
       text-align: center;
-      padding: 28px 15px;
-      border-radius: 0 0 25px 25px;
+      padding: 28px 16px 25px;
+      border-radius: 0 0 24px 24px;
+      box-shadow: 0 4px 18px rgba(255, 0, 128, 0.12);
     }
 
     header h1 {
-      font-size: 32px;
-      margin-bottom: 7px;
+      font-size: clamp(25px, 5vw, 34px);
+      font-weight: 800;
+      margin-bottom: 5px;
+      letter-spacing: -0.5px;
     }
 
     header p {
       font-size: 14px;
-      opacity: .95;
+      opacity: 0.96;
     }
 
     .container {
-      max-width: 1100px;
+      width: 100%;
+      max-width: 1250px;
       margin: auto;
-      padding: 25px 15px;
+      padding: 25px 16px 35px;
     }
 
     .hero {
@@ -48,101 +68,256 @@
     }
 
     .hero h2 {
-      font-size: 25px;
+      font-size: clamp(22px, 4vw, 28px);
       color: #e60073;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
     }
 
     .hero p {
-      color: #666;
+      color: var(--muted);
+      font-size: 14px;
     }
 
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .section-heading h3 {
+      font-size: 18px;
+    }
+
+    .section-heading span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    /* PRODUCT GRID: 2 columns on mobile */
     #products {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
     }
 
     .product {
-      background: white;
-      border-radius: 18px;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 13px;
       overflow: hidden;
-      box-shadow: 0 5px 20px rgba(0,0,0,.08);
-      border: 1px solid #f3d9e8;
-      transition: .25s;
+      box-shadow: 0 3px 12px rgba(60, 20, 40, 0.055);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .product:hover {
-      transform: translateY(-4px);
+    /* Consistent image area; show the whole product image */
+    .product-image-wrap {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      background: #fff;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
- .product img {
-    width: 100%;
-    height: auto;
-    max-height: none;
-    object-fit: contain;
-    display: block;
-    background: #fff;
-  }
+    .product img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      background: #fff;
+    }
 
     .product-info {
-      padding: 15px;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      padding: 11px;
+      min-width: 0;
     }
 
     .product h3 {
-      font-size: 18px;
-      margin-bottom: 8px;
+      font-size: 14px;
+      line-height: 1.4;
+      font-weight: 700;
+      margin-bottom: 6px;
+      overflow-wrap: anywhere;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .price {
       color: #e60073;
-      font-weight: bold;
-      font-size: 21px;
-      margin-bottom: 8px;
+      font-size: 18px;
+      line-height: 1.4;
+      font-weight: 800;
+      margin-bottom: 7px;
+      overflow-wrap: anywhere;
     }
 
     .description {
-      color: #666;
-      font-size: 14px;
+      color: var(--muted);
+      font-size: 12px;
       line-height: 1.5;
-      min-height: 42px;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
 
     .buy-btn {
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 100%;
-      padding: 12px;
+      min-height: 40px;
+      margin-top: auto;
+      padding: 10px 7px;
       text-align: center;
       text-decoration: none;
-      background: #ff0080;
+      background: var(--pink);
       color: white;
-      border-radius: 10px;
-      font-weight: bold;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+      transition: background 0.2s ease;
     }
 
     .buy-btn:hover {
-      background: #d9006c;
+      background: var(--pink-dark);
+    }
+
+    .buy-btn:focus-visible {
+      outline: 3px solid #ffacd4;
+      outline-offset: 2px;
     }
 
     .loading,
     .empty {
       text-align: center;
-      padding: 40px 10px;
-      color: #777;
+      padding: 42px 12px;
+      color: var(--muted);
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
       grid-column: 1 / -1;
     }
 
     footer {
       text-align: center;
-      padding: 30px 15px;
-      color: #777;
+      padding: 25px 16px 30px;
+      color: var(--muted);
       font-size: 12px;
+      border-top: 1px solid #f4e5ed;
+      background: #fff;
     }
 
     .disclosure {
       margin-top: 8px;
-      color: #999;
+      color: #918792;
+      line-height: 1.5;
+    }
+
+    /* Larger phones and small tablets */
+    @media (min-width: 480px) {
+      .container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      #products {
+        gap: 16px;
+      }
+
+      .product-info {
+        padding: 13px;
+      }
+
+      .product h3 {
+        font-size: 15px;
+      }
+
+      .description {
+        font-size: 13px;
+      }
+
+      .buy-btn {
+        font-size: 13px;
+      }
+    }
+
+    /* Tablets: 3 products per row */
+    @media (min-width: 650px) {
+      #products {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+    }
+
+    /* Desktop: 4 products per row */
+    @media (min-width: 950px) {
+      .container {
+        padding-top: 35px;
+      }
+
+      #products {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 22px;
+      }
+
+      .product {
+        border-radius: 16px;
+      }
+
+      .product:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(60, 20, 40, 0.1);
+      }
+
+      .product-info {
+        padding: 15px;
+      }
+
+      .product h3 {
+        font-size: 16px;
+      }
+
+      .price {
+        font-size: 20px;
+      }
+
+      .description {
+        font-size: 13px;
+      }
+
+      .buy-btn {
+        min-height: 44px;
+        font-size: 13px;
+      }
+    }
+
+    /* Respect reduced-motion settings */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+      }
     }
   </style>
 </head>
@@ -151,26 +326,32 @@
 
   <header>
     <h1>Mahira Finds 🛍️</h1>
-    <p>Trending Fashion & Meesho Finds</p>
+    <p>Trending Fashion &amp; Meesho Finds</p>
   </header>
 
   <main class="container">
 
-    <div class="hero">
+    <section class="hero">
       <h2>✨ Latest Finds</h2>
-      <p>Shop our handpicked products from Meesho</p>
+      <p>Discover beautiful styles, handpicked for you.</p>
+    </section>
+
+    <div class="section-heading">
+      <h3>Shop Our Collection 💗</h3>
+      <span>Fashion &amp; Lifestyle</span>
     </div>
 
-    <section id="products">
+    <section id="products" aria-label="Our products" aria-live="polite">
       <div class="loading">Loading products...</div>
     </section>
 
   </main>
 
   <footer>
-    © 2026 Mahira Finds
+    <p>© 2026 Mahira Finds. All rights reserved.</p>
     <div class="disclosure">
-      This website contains affiliate links. We may earn a commission from eligible purchases.
+      This website contains affiliate links. We may earn a commission
+      from eligible purchases, at no extra cost to you.
     </div>
   </footer>
 
@@ -201,10 +382,109 @@
 
     const productsContainer = document.getElementById("products");
 
-    async function loadProducts() {
+    function createElement(tag, className, text) {
+      const element = document.createElement(tag);
+
+      if (className) {
+        element.className = className;
+      }
+
+      if (text !== undefined) {
+        element.textContent = text;
+      }
+
+      return element;
+    }
+
+    function createProductCard(product) {
+      const card = createElement("article", "product");
+
+      const imageWrap = createElement("div", "product-image-wrap");
+      const image = createElement("img");
+
+      image.src = product.imageUrl || "";
+      image.alt = product.name || "Mahira Finds product";
+      image.loading = "lazy";
+      image.decoding = "async";
+
+      image.addEventListener("error", () => {
+        imageWrap.style.display = "none";
+      });
+
+      imageWrap.appendChild(image);
+
+      const info = createElement("div", "product-info");
+
+      const name = createElement(
+        "h3",
+        "",
+        product.name || "Product"
+      );
+
+      const price = createElement(
+        "div",
+        "price",
+        product.price !== undefined &&
+        product.price !== null &&
+        product.price !== ""
+          ? `₹${product.price}`
+          : "Check price"
+      );
+
+      const description = createElement(
+        "div",
+        "description",
+        product.description || ""
+      );
+
+      const buyButton = createElement(
+        "a",
+        "buy-btn",
+        "🛒 View Product on Meesho"
+      );
+
+      const meeshoUrl = product.meeshoUrl || "";
 
       try {
+        const parsedUrl = new URL(meeshoUrl);
 
+        if (
+          parsedUrl.protocol === "https:" &&
+          parsedUrl.hostname &&
+          meeshoUrl
+        ) {
+          buyButton.href = parsedUrl.href;
+          buyButton.target = "_blank";
+          buyButton.rel = "noopener noreferrer";
+        } else {
+          buyButton.href = "#";
+          buyButton.setAttribute("aria-disabled", "true");
+          buyButton.style.opacity = "0.6";
+
+          buyButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            alert("Product link is not available yet.");
+          });
+        }
+      } catch {
+        buyButton.href = "#";
+        buyButton.setAttribute("aria-disabled", "true");
+        buyButton.style.opacity = "0.6";
+
+        buyButton.addEventListener("click", (event) => {
+          event.preventDefault();
+          alert("Product link is not available yet.");
+        });
+      }
+
+      info.append(name, price, description, buyButton);
+      card.append(imageWrap, info);
+
+      return card;
+    }
+
+    async function loadProducts() {
+      try {
         const productsQuery = query(
           collection(db, "products"),
           orderBy("createdAt", "desc")
@@ -212,71 +492,39 @@
 
         const snapshot = await getDocs(productsQuery);
 
-        productsContainer.innerHTML = "";
+        productsContainer.replaceChildren();
 
         if (snapshot.empty) {
-          productsContainer.innerHTML = `
-            <div class="empty">
-              No products available yet.
-            </div>
-          `;
+          productsContainer.appendChild(
+            createElement(
+              "div",
+              "empty",
+              "No products available yet. Please check back soon! 💗"
+            )
+          );
           return;
         }
 
         snapshot.forEach((doc) => {
-
           const product = doc.data();
-
-          const card = document.createElement("article");
-          card.className = "product";
-
-          card.innerHTML = `
-            <img
-              src="${product.imageUrl || ""}"
-              alt="${product.name || "Product"}"
-              loading="lazy"
-            >
-
-            <div class="product-info">
-
-              <h3>${product.name || "Product"}</h3>
-
-              <div class="price">
-                ₹${product.price || ""}
-              </div>
-
-              <div class="description">
-                ${product.description || ""}
-              </div>
-
-              <a
-                class="buy-btn"
-                href="${product.meeshoUrl || "#"}"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                🛒 View Product on Meesho
-              </a>
-
-            </div>
-          `;
-
-          productsContainer.appendChild(card);
-
+          productsContainer.appendChild(
+            createProductCard(product)
+          );
         });
 
       } catch (error) {
+        console.error("Error loading products:", error);
 
-        console.error(error);
+        productsContainer.replaceChildren();
 
-        productsContainer.innerHTML = `
-          <div class="empty">
-            Unable to load products right now.
-          </div>
-        `;
-
+        productsContainer.appendChild(
+          createElement(
+            "div",
+            "empty",
+            "Unable to load products right now. Please refresh and try again."
+          )
+        );
       }
-
     }
 
     loadProducts();
